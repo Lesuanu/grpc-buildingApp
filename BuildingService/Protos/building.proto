@@ -1,0 +1,78 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "BuildingServiceGrpc";
+package building;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+service BuildingProtoService {
+
+	rpc GetBuilding (GetBuildingRequest) returns (BuildingModel);
+
+	//rpc GetAllBuilding (GetAllBuildingRequest) returns (stream BuildingResponse); 
+
+	rpc GetAllBuilding (google.protobuf.Empty) returns (stream BuildingModel);
+
+	rpc AddBuilding (AddBuildingRequest) returns (BuildingModel);
+
+	rpc UpdateBuilding (UpdateBuildingRequest) returns (BuildingModel);
+
+	rpc DeleteBuilding (DeleteBuildingRequest) returns (DeleteBuildingResponse);
+
+	rpc InsertBulkBuilding (stream BuildingModel) returns (InsertBulkBuildingResponse);
+
+	rpc Test (google.protobuf.Empty) returns (google.protobuf.Empty);
+}
+
+message GetBuildingRequest {
+	int32 buildingId = 1;
+}
+
+message AddBuildingRequest {
+	BuildingModel building = 1;
+}
+
+message UpdateBuildingRequest {
+	BuildingModel building = 1;
+}
+
+message DeleteBuildingRequest {
+	int32 buildingId = 1;
+}
+
+message DeleteBuildingResponse {
+	bool success = 1;
+}
+
+message InsertBulkBuildingResponse {
+	bool success = 1;
+	int32 insertCount = 2;
+}
+
+message BuildingModel {
+	int32 buildingId = 1;
+	string name = 2;
+	string description = 3;
+	int32 price = 4;
+	BuildingStatusModel buildingStatus = 5;
+	google.protobuf.Timestamp createdTime = 6;
+	BuildingAddressModel buildingAddress = 7;
+}
+
+message BuildingAddressModel {
+	int32 id = 1;
+	string city = 2;
+	string state = 3;
+	int32 phone = 4;
+	string email = 5;
+	google.protobuf.Timestamp createdTime = 6;
+	string region = 7;
+}
+
+enum BuildingStatusModel {
+	  Available = 0;
+		NotAvailable = 1;
+		ForSale = 2;
+		ForLease = 3;
+}
